@@ -1,268 +1,159 @@
-\# 📧 SMS Spam Classifier — Logistic Regression + FastAPI  
+---
 
-End-to-end machine learning project: training → evaluation → deployed inference API.
+## 📘 How to Run This Project (Step-by-Step Instructions)
 
-
-
-
-
-\##  Overview
-
-
-
-This project builds a \*\*Spam Detection Model\*\* using Logistic Regression and TF-IDF text features.  
-
-The trained model is deployed using \*\*FastAPI\*\*, providing a production-style real-time inference endpoint.
-
-
-
-This project demonstrates real ML engineering skills:
-
-\- Clean preprocessing pipeline  
-
-\- TF-IDF feature engineering  
-
-\- Saved ML pipeline (`joblib`)  
-
-\- FastAPI inference service  
-
-\- Professional project structure  
-
-
+This section provides full instructions to reproduce the dataset preparation, model training, and deployment using FastAPI and Streamlit.
 
 ---
 
-
-
-\##  Problem Statement
-
-
-
-Spam messages are one of the most common communication threats.  
-
-This project classifies SMS messages into:
-
-
-
-\- \*\*ham (0)\*\* → legitimate  
-
-\- \*\*spam (1)\*\* → unwanted / promotional  
-
-
-
----
-
-
-
-\## 📂 Project Structure
-
-
-
-```
-
-spam-classifier-logreg/
-
-│
-
-├── app/                     # FastAPI application
-
-│   └── main.py
-
-│
-
-├── notebooks/               # Jupyter training notebook
-
-│   └── 01\_training.ipynb
-
-│
-
-├── models/                  # Model artifacts (ignored in Git)
-
-│
-
-├── data/                    # Dataset (ignored in Git)
-
-│
-
-├── requirements.txt
-
-├── .gitignore
-
-└── README.md
-
-```
-
-
-
-\##  Model Training (Summary)
-
-
-
-\- TF-IDF used for text vectorization  
-
-\- Logistic Regression as classifier  
-
-\- Metrics evaluated:
-
-&nbsp; - Accuracy  
-
-&nbsp; - Precision  
-
-&nbsp; - Recall  
-
-&nbsp; - F1 Score  
-
-&nbsp; - Confusion Matrix  
-
-
-
-Model + preprocessing pipeline saved as:
-
-
-
-```
-
-models/spam\_pipeline.joblib
-
-```
-
-
-
----
-
-
-
-\## 🌐 FastAPI Inference Service
-
-
-
-\### \*\*Run the API locally\*\*
-
-
+### 🔹 1. Clone the Repository
 
 ```bash
+git clone https://github.com/talarijayakiran/spam-classifier-logreg
+cd spam-classifier-logreg
+```
 
+---
+
+### 🔹 2. Create & Activate Virtual Environment (Windows)
+
+```bash
+python -m venv .venv
+.\.venv\Scripts\activate
+```
+
+---
+
+### 🔹 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+### 🔹 4. Dataset Setup
+
+Download the **SMS Spam Collection Dataset** from:
+
+UCI Repository:  
+https://archive.ics.uci.edu/ml/datasets/sms+spam+collection
+
+Place the downloaded CSV file here:
+
+```
+data/spam.csv
+```
+
+> Note: `data/` is ignored in GitHub to keep the repo clean.
+
+---
+
+### 🔹 5. Train the Model (Jupyter Notebook)
+
+Open the training notebook:
+
+```
+notebooks/01_training.ipynb
+```
+
+Running all cells will:
+
+- Load and clean the text data  
+- Apply preprocessing (lowercase, punctuation removal, tokenization, stopwords)  
+- Convert text to TF-IDF features  
+- Train a Logistic Regression model  
+- Evaluate the model  
+- Save the final pipeline to:
+
+```
+models/spam_pipeline.joblib
+```
+
+---
+
+### 🔹 6. Run FastAPI (Model Inference API)
+
+Start the API server:
+
+```bash
 uvicorn app.main:app --reload --port 8000
-
 ```
 
+Open in browser:
 
-
-Swagger docs available at:
-
-
-
-👉 http://127.0.0.1:8000/docs  
-
-👉 http://127.0.0.1:8000/health
-
-
+- Swagger UI → **http://127.0.0.1:8000/docs**
+- Health check → **http://127.0.0.1:8000/health**
 
 ---
 
+### 🔹 7. Run Streamlit Web App (Bonus UI)
 
-
-\## 📬 Example Prediction
-
-
-
-\### Request:
-
-```json
-
-{
-
-&nbsp; "text": "Congratulations! You won a free prize. Claim now!"
-
-}
-
+```bash
+streamlit run app/ui/streamlit_app.py
 ```
 
+This launches an interactive interface where you can:
 
-
-\### Response:
-
-```json
-
-{
-
-&nbsp; "prediction": 1,
-
-&nbsp; "probability": 0.9821,
-
-&nbsp; "model\_version": "v1.0"
-
-}
-
-```
-
-
+- Enter any SMS message  
+- Get prediction (Spam / Ham)  
+- View probability score  
 
 ---
 
+## 📚 Data Source
 
+**SMS Spam Collection Dataset**  
+UCI Machine Learning Repository  
+https://archive.ics.uci.edu/ml/datasets/sms+spam+collection
 
-\## 🧱 Tech Stack
+Classes:
 
-
-
-\- Python  
-
-\- Scikit-Learn  
-
-\- NLTK  
-
-\- TF-IDF Vectorizer  
-
-\- Logistic Regression  
-
-\- FastAPI  
-
-\- Uvicorn  
-
-
+- **0 = ham**  
+- **1 = spam**
 
 ---
 
+##  Libraries Used
 
-
-\## 🚀 Next Up (Future Improvements)
-
-
-
-\- Add Docker container for deployment  
-
-\- Add Streamlit UI for demo users  
-
-\- Add unit tests + CI workflow  
-
-\- Model versioning + monitoring  
-
-\- REST + async optimizations  
-
-
+- pandas  
+- numpy  
+- scikit-learn  
+- nltk  
+- joblib  
+- fastapi  
+- uvicorn  
+- streamlit  
 
 ---
 
+##  Evaluation Summary
 
+| Metric        | Score     |
+|---------------|-----------|
+| Accuracy      | **0.9677** |
+| Precision     | **0.9829** |
+| Recall        | **0.7723** |
+| F1 Score      | **0.8650** |
 
-\## 📄 License
-
-
-
-This project is open-source under the MIT License.
-
-
+### Key Insight:
+- Ham detection is nearly perfect.
+- Spam detection is strong but can be improved by tuning TF-IDF features or using Naive Bayes/SVM.
 
 ---
 
+## 📝 Conclusion
 
+This project demonstrates a complete ML workflow:
 
-\## 👤 Author
+- Data preprocessing  
+- TF-IDF vectorization  
+- Logistic Regression training  
+- Evaluation  
+- Saving and loading ML pipelines  
+- Deployment using FastAPI  
+- Streamlit UI for interactive classification  
 
-\*\*Talari Jaya Kiran\*\*  
+It reflects real-world ML engineering and MLOps practices.
 
-MLOps / Machine Learning Engineer  
-
-
-
+---
